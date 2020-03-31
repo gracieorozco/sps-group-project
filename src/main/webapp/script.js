@@ -57,6 +57,7 @@ function obtain_fetch_data() {
       })
 }
 
+
 function create_and_set_html_content(element_tag, text_content) {
     // Should be used only for simple HTML tags like h1, p, a
     // Not for complex HTML tags such as forms and input

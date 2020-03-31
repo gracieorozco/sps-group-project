@@ -29,24 +29,26 @@ public class DataServlet extends HttpServlet {
 
     private ArrayList<Post> posts = new ArrayList<Post>();
 
-  @Override
+@Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Post temp_post = new Post("Ana", "English Revision", "Could someone revise my essay before next week?");
-    posts.add(temp_post);
-    temp_post = new Post("Ben", "Math Problems", "Does anyone know how to solve problem 3 on page 345?");
-    posts.add(temp_post);
-    temp_post = new Post("Connor", "Computer Science Help", "How should I get started in website development?");
-    posts.add(temp_post);
-    temp_post = new Post("David", "Physics Question", "How should I study for the next exam?");
-    posts.add(temp_post);
-    temp_post = new Post("Ellen", "History Study Guide", "Who wants to study together for the midterm?");
-    posts.add(temp_post);
-    temp_post = new Post("Flora", "Psychology Vocabulary", "Does someone have the vocabulary for chapter 5?");
-    posts.add(temp_post);
     String json = convertToJsonUsingGson(posts);
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form.
+    String username = request.getParameter("user-input");
+    String title = request.getParameter("title-input");
+    String content = request.getParameter("content-input");
+    Post post = new Post(username, title, content);
+    posts.add(post);
+    // Respond with the result.
+    response.setContentType("application/json;");
+    String json = convertToJsonUsingGson(posts);
+    response.getWriter().println(json);
+    response.sendRedirect("posts.html");
   }
 
   public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {

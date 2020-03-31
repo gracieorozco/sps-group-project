@@ -13,7 +13,6 @@
 // limitations under the License.
 
 function obtain_fetch_data() {
-  document.getElementById('posts').innerHTML='';
   fetch('/data')
       .then(response => response.text())
       .then(text => {
@@ -57,6 +56,7 @@ function obtain_fetch_data() {
         console.log('Error!');
       })
 }
+
 
 function create_and_set_html_content(element_tag, text_content) {
     // Should be used only for simple HTML tags like h1, p, a
