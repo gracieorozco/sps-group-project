@@ -14,6 +14,9 @@
 
 package com.google.sps.servlets;
 
+import com.google.gson.Gson;
+import com.google.sps.data.Post;
+import java.util.ArrayList;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,9 +27,31 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
+    private ArrayList<Post> posts = new ArrayList<Post>();
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html;");
-    response.getWriter().println("<h1>Hello world!</h1>");
+    Post temp_post = new Post("Ana", "English Revision", "Could someone revise my essay before next week?");
+    posts.add(temp_post);
+    temp_post = new Post("Ben", "Math Problems", "Does anyone know how to solve problem 3 on page 345?");
+    posts.add(temp_post);
+    temp_post = new Post("Connor", "Computer Science Help", "How should I get started in website development?");
+    posts.add(temp_post);
+    temp_post = new Post("David", "Physics Question", "How should I study for the next exam?");
+    posts.add(temp_post);
+    temp_post = new Post("Ellen", "History Study Guide", "Who wants to study together for the midterm?");
+    posts.add(temp_post);
+    temp_post = new Post("Flora", "Psychology Vocabulary", "Does someone have the vocabulary for chapter 5?");
+    posts.add(temp_post);
+    String json = convertToJsonUsingGson(posts);
+    response.setContentType("application/json;");
+    response.getWriter().println(json);
+
+  }
+
+  public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {
+    Gson gson = new Gson();
+    String json = gson.toJson(post_arraylist);
+    return json;
   }
 }
