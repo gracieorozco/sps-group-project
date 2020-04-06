@@ -2,14 +2,22 @@ package com.google.sps.data;
 
 public final class Post {
 
-    private final String user_name;
+    private final long id;
     private String post_title;
+    private final String user_name;
     private String post_content;
+    private long time_posted;
 
-    public Post(String user, String title, String content) {
-        this.user_name = user;
+    public Post(long id, String title, String user, String content, long time) {
+        this.id = id;
         this.post_title = title;
+        this.user_name = user;
         this.post_content = content;
+        this.time_posted = time;
+    }
+
+    public long GetID() {
+        return this.id;
     }
 
     public String GetPostTitle() {
@@ -22,6 +30,10 @@ public final class Post {
 
     public String GetPostContent() {
         return this.post_content;
+    }
+
+    public long GetTimePosted() {
+        return this.time_posted;
     }
 
 }

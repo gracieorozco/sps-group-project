@@ -13,7 +13,6 @@
 // limitations under the License.
 
 function obtain_fetch_data() {
-  document.getElementById('posts').innerHTML='';
   fetch('/data')
       .then(response => response.text())
       .then(text => {

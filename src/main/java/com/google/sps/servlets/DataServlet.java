@@ -14,6 +14,12 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import com.google.sps.data.Post;
 import java.util.ArrayList;
@@ -27,26 +33,45 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/data")
 public class DataServlet extends HttpServlet {
 
-    private ArrayList<Post> posts = new ArrayList<Post>();
-
-  @Override
+@Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    Post temp_post = new Post("Ana", "English Revision", "Could someone revise my essay before next week?");
-    posts.add(temp_post);
-    temp_post = new Post("Ben", "Math Problems", "Does anyone know how to solve problem 3 on page 345?");
-    posts.add(temp_post);
-    temp_post = new Post("Connor", "Computer Science Help", "How should I get started in website development?");
-    posts.add(temp_post);
-    temp_post = new Post("David", "Physics Question", "How should I study for the next exam?");
-    posts.add(temp_post);
-    temp_post = new Post("Ellen", "History Study Guide", "Who wants to study together for the midterm?");
-    posts.add(temp_post);
-    temp_post = new Post("Flora", "Psychology Vocabulary", "Does someone have the vocabulary for chapter 5?");
-    posts.add(temp_post);
+    // Variable set up for query
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Post").addSort("timestamp", SortDirection.DESCENDING);
+    PreparedQuery results = datastore.prepare(query);
+    // Loop through the query and set properties of a post object to add into an ArrayList
+    ArrayList<Post> posts = new ArrayList<Post>();
+    for (Entity entity : results.asIterable()) {
+        long id = entity.getKey().getId();
+        String post_title = (String) entity.getProperty("post_title");
+        String user_name = (String) entity.getProperty("user_name");
+        String post_content = (String) entity.getProperty("post_content");
+        long timestamp = (long) entity.getProperty("timestamp");
+        Post post = new Post(id, post_title, user_name, post_content, timestamp);
+        posts.add(post);
+    }
+    // Convert the ArrayList to a string in JSON format and print the response
     String json = convertToJsonUsingGson(posts);
     response.setContentType("application/json;");
     response.getWriter().println(json);
+  }
 
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // Get the input from the form
+    String username = request.getParameter("user-input");
+    String title = request.getParameter("title-input");
+    String content = request.getParameter("content-input");
+    long timestamp = System.currentTimeMillis();
+    // Create an entity and set the properties
+    Entity post_entity = new Entity("Post");
+    post_entity.setProperty("user_name", username);
+    post_entity.setProperty("post_title", title);
+    post_entity.setProperty("post_content", content);
+    post_entity.setProperty("timestamp", timestamp);
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    datastore.put(post_entity);
+    response.sendRedirect("posts.html");
   }
 
   public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {
