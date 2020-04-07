@@ -22,7 +22,9 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import com.google.sps.data.Post;
+import com.google.sps.data.Comment;
 import java.util.ArrayList;
+import java.util.List;
 import java.io.IOException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -47,6 +49,7 @@ public class DataServlet extends HttpServlet {
         String user_name = (String) entity.getProperty("user_name");
         String post_content = (String) entity.getProperty("post_content");
         long timestamp = (long) entity.getProperty("timestamp");
+        //ArrayList<Comment> comments = (List) entity.getProperty("comments");
         Post post = new Post(id, post_title, user_name, post_content, timestamp);
         posts.add(post);
     }
@@ -59,20 +62,58 @@ public class DataServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the input from the form
-    String username = request.getParameter("user-input");
-    String title = request.getParameter("title-input");
-    String content = request.getParameter("content-input");
-    long timestamp = System.currentTimeMillis();
-    // Create an entity and set the properties
-    Entity post_entity = new Entity("Post");
-    post_entity.setProperty("user_name", username);
-    post_entity.setProperty("post_title", title);
-    post_entity.setProperty("post_content", content);
-    post_entity.setProperty("timestamp", timestamp);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(post_entity);
+    //String check = request.getParameter("title-input");
+    //if(check != null){
+        //we're dealing with a post
+        String username = request.getParameter("user-input");
+        String title = request.getParameter("title-input");
+        String content = request.getParameter("content-input");
+        long timestamp = System.currentTimeMillis();
+        ArrayList<Comment> comments = new ArrayList<Comment>();
+        // Create an entity and set the properties
+        Entity post_entity = new Entity("Post");
+        post_entity.setProperty("user_name", username);
+        post_entity.setProperty("post_title", title);
+        post_entity.setProperty("post_content", content);
+        post_entity.setProperty("comments", comments);
+        post_entity.setProperty("timestamp", timestamp);
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        datastore.put(post_entity);
+  //  }
+    
+    /*
+    else {
+        //we're dealing with a comment 
+        //we need to know what post to add on to
+        //what post is this?  
+        String post_id = request.getParameter("post-id");
+        String comment_content = request.getParameter("content-input");
+        //then we iterate
+        //
+        //
+        //new comment
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Query query = new Query("Post").addSort("timestamp", SortDirection.DESCENDING);
+        PreparedQuery results = datastore.prepare(query);
+
+        //update entity with new comment
+        for (Entity entity : results.asIterable()) {
+            long cand_id = (long) entity.getProperty("id");
+            String cand_id_str = Long.toString(cand_id);
+            if(  cand_id_str == post_id ){
+                //then this is our post we want
+                //we have to add a comment to this
+                ArrayList<Comment> n_com = entity.getProperty("comments");
+                n_com.add(new Comment(cand_id, comment_content, System.currentTimeMillis()));
+                Entity task = Entity.newBuilder(datastore.get( entity.getKey() ) ).set("comments", n_com).build();
+                datastore.update(task);
+                break;
+            }
+        }
+    }
+    */
     response.sendRedirect("posts.html");
-  }
+ }
 
   public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {
     Gson gson = new Gson();
