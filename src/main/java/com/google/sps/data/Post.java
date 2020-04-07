@@ -1,4 +1,6 @@
 package com.google.sps.data;
+import java.util.ArrayList;
+import com.google.sps.data.Comment;
 
 public final class Post {
 
@@ -7,6 +9,7 @@ public final class Post {
     private final String user_name;
     private String post_content;
     private long time_posted;
+//    private ArrayList<Comment> comments;
 
     public Post(long id, String title, String user, String content, long time) {
         this.id = id;
@@ -35,5 +38,17 @@ public final class Post {
     public long GetTimePosted() {
         return this.time_posted;
     }
+
+    /*
+    public void addComment(Comment c){
+        comments.add(c); 
+        return;
+    }
+    
+
+    public ArrayList<Comment> GetComments() {
+        return this.comments;
+    }
+    */
 
 }
