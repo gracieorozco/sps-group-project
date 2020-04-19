@@ -34,6 +34,10 @@ function obtain_fetch_data() {
                 var p = create_and_set_html_content('p', post_obj.user_name);
                 p.setAttribute('class', 'card-subtitle mb-2 text-muted');
                 card_body_div.appendChild(p);
+                // Creation and styling of the user email as a p element
+                var p = create_and_set_html_content('p', post_obj.email);
+                p.setAttribute('class', 'card-subtitle mb-2 text-muted');
+                card_body_div.appendChild(p);
                 // Creation and styling of the post content as a p element
                 p = create_and_set_html_content('p', post_obj.post_content);
                 p.setAttribute('class', 'card-text');
