@@ -7,10 +7,13 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body onload="obtain_fetch_data()">
+  <body onload="obtain_fetch_data(true)">
     <div style="margin-left:50px;">
         <h1>Posts</h1>
-        <a href="new_post.html" class="btn btn-primary" style="color:white;">Create a new post</a>
+        <a href="new_post.html" class="btn btn-primary" style="color:white;">Create a new post</a> <br> <br>
+        <form action="/search_data" method="POST">
+            <input type="text" name="search_text_input"/>
+        </form>
     </div>
     <div id="posts" class="row" style="margin-left:40px;"></div>
   </body>
