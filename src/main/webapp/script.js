@@ -13,13 +13,13 @@
 // limitations under the License.
 
 function obtain_fetch_data(servlet_bool) {
-    fetch_string = ""
-    if (servlet_bool) {
+    var fetch_string = ""
+    if (servlet_bool == true) {
         fetch_string = "/data"
     } else {
-        fetch_string = "/search_data"
+        // fetch_string = "/search_data"
     }
-  fetch(fetch_string)
+    fetch(fetch_string)
       .then(response => response.text())
       .then(text => {
         var parsed_json = JSON.parse(text);
