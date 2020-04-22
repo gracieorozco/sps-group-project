@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+var UNIQUE = "0";
+
 function obtain_fetch_data() {
   fetch('/data')
       .then(response => response.text())
@@ -34,14 +36,62 @@ function obtain_fetch_data() {
                 var p = create_and_set_html_content('p', post_obj.user_name);
                 p.setAttribute('class', 'card-subtitle mb-2 text-muted');
                 card_body_div.appendChild(p);
+
                 // Creation and styling of the post content as a p element
                 p = create_and_set_html_content('p', post_obj.post_content);
                 p.setAttribute('class', 'card-text');
                 card_body_div.appendChild(p);     
+
                 // Creation and styling of a button as an a element
+
+                
+                //THIS IS REPLY BUTTON CREATION
                 var reply_button = create_and_set_html_content('a', 'Reply');
+                //create the attributes for reply button
+                //set the link, so when the reply button is clicked, go to 
+                //some jsp, and then we'll get the information about the request
+
+                //var reply_button = document.createElement('button');
+
+                //reply_button.innerHTML = 'Reply';
                 reply_button.setAttribute('class', 'btn btn-primary')
                 reply_button.setAttribute('style', 'color:white;');
+                reply_button.setAttribute('href', 'new_comment.html');
+
+
+                console.log("here");
+
+                reply_button.onclick = function() {
+                    doSomething(post_obj.unique_id);
+                   //UNIQUE = String(post_obj.unique_id);
+                   //setTimeout(doSomething, 1000, post_obj.unique_id); //this function will change the value of 
+                };
+
+                console.log("after reply button created");
+                //after reply button created
+                //
+                console.log(post_obj.post_title);
+                console.log(post_obj.unique_id);
+
+                fetch('/comment_data') 
+                    .then(response => response.text()) 
+                    .then(text => {
+                        var parsed_json_2 = JSON.parse(text);
+                            parsed_json_2.forEach(comment_obj => {
+                                if(comment_obj.post_parent_id == post_obj.unique_id){
+                                    obj = create_and_set_html_content('p', "comment: " + comment_obj.comment_content);
+                                    //p.setAttribute('class', 'card-text');
+                                    card_body_div.appendChild(obj);
+                                }
+                          });
+                    })
+                    .catch(()=>{
+                        console.log('Error!');
+                    })
+
+                console.log("after fetching comment data");
+
+
                 card_body_div.appendChild(reply_button);
                 // Append all of the elements within card_body_div into card_div
                 card_div.appendChild(card_body_div);
@@ -64,3 +114,29 @@ function create_and_set_html_content(element_tag, text_content) {
     tag.innerHTML = text_content;
     return tag;
 }
+
+
+function doSomething(id) {
+    console.log("in do something");
+    /*
+    setTimeout(doAnother, 2000, id);
+    */
+    UNIQUE = String(id);
+    console.log(UNIQUE);
+    window.name = UNIQUE;
+    /*
+    document.getElementById("reply-id").onload = function() {
+        console.log("in being loaded");
+        document.getElementById("reply-id").innerHTML = UNIQUE; 
+    };
+    */
+    console.log("about to end do something");
+}
+
+function doAnother(){
+    console.log("in do another");
+    document.getElementById("reply-id").innerHTML = window.name;
+    console.log("about to end do another");
+}
+
+

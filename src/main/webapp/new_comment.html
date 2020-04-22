@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>SPS Group Project</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body onload="doAnother()">
+    <div class="container" id="content">
+        <h1>Create a new comment</h1>
+        <form action="/comment_data" method="POST">
+            <textarea class="form-control" name="user-input" style="margin-top:20px;margin-bottom:20px">Name</textarea>
+            <textarea class="form-control" name="content-input" style="margin-top:20px;margin-bottom:20px">Write your comment</textarea>
+
+            <textarea style="display:none;" class="form-control" name="reply-id" id="reply-id" style="margin-top:20px;margin-bottom:20px">Reply ID</textarea>
+            <input class="btn btn-primary" type="submit"></input>
+        </form>
+    </div>
+  </body>
+</html>
