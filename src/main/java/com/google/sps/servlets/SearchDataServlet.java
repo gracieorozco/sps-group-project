@@ -53,13 +53,6 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
 
         // If post contains search term, add it to ArrayList
         Post post = new Post(id, post_title, user_name, post_content, timestamp);
-        // if ((search_string_pass == null) || (search_string_pass == "")) {
-        //     posts.add(post);
-        // } else {
-        //     if (post_content.contains(search_string_pass)) {
-        //         posts.add(post);
-        //     }
-        // }
     }
 
     // Convert the ArrayList to a string in JSON format and print the response
@@ -75,15 +68,16 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
         response.getWriter().println("Error");
         return;
     }
-        // response.sendRedirect("search_results.html");
-    response.getWriter().println("<h1>Search</h1>");
+
+    response.getWriter().println("<h1>Search Results for \"" + search_string_pass + "\"</h1>");
+
     // Variable set up for query
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Post").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
     search_string_pass = request.getParameter("search_text_input");
+
     // Loop through the query and set properties of a post object to add into an ArrayList
-        ArrayList<Post> search_results = new ArrayList<Post>();
     for (Entity entity : results.asIterable()) {
         long id = entity.getKey().getId();
         String post_content = (String) entity.getProperty("post_content");
@@ -93,21 +87,16 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
         if (post_content == null || post_title == null || user_name == null) {
             continue;
         }
+        
         // If post contains search term, add it to ArrayList
-        Post post = new Post(id, post_title, user_name, post_content, timestamp);
         System.out.println("String to find: " + search_string_pass);
-        if (post_content.contains(search_string_pass)) {
+        if (post_content.toLowerCase().contains(search_string_pass.toLowerCase())) {
             System.out.println("In word");
             response.getWriter().println("<p>" + post_title + "</p>");
-            search_results.add(post);
         } else {
             System.out.println("Not in word");
         }
     }
-
-    // String json = convertToJsonUsingGson(search_results);
-    // response.setContentType("application/json;");
-    // response.getWriter().println(json);
   }
 
   public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {

@@ -39,6 +39,7 @@ public class DataServlet extends HttpServlet {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Post").addSort("timestamp", SortDirection.DESCENDING);
     PreparedQuery results = datastore.prepare(query);
+
     // Loop through the query and set properties of a post object to add into an ArrayList
     ArrayList<Post> posts = new ArrayList<Post>();
     for (Entity entity : results.asIterable()) {
@@ -50,6 +51,7 @@ public class DataServlet extends HttpServlet {
         Post post = new Post(id, post_title, user_name, post_content, timestamp);
         posts.add(post);
     }
+
     // Convert the ArrayList to a string in JSON format and print the response
     String json = convertToJsonUsingGson(posts);
     response.setContentType("application/json;");
@@ -63,15 +65,17 @@ public class DataServlet extends HttpServlet {
     String title = request.getParameter("title-input");
     String content = request.getParameter("content-input");
     long timestamp = System.currentTimeMillis();
+
     // Create an entity and set the properties
     Entity post_entity = new Entity("Post");
     post_entity.setProperty("user_name", username);
     post_entity.setProperty("post_title", title);
     post_entity.setProperty("post_content", content);
     post_entity.setProperty("timestamp", timestamp);
+
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     datastore.put(post_entity);
-    response.sendRedirect("posts.html");
+    response.sendRedirect("index.html");
   }
 
   public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {
