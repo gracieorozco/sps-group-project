@@ -17,7 +17,7 @@ function obtain_fetch_data(servlet_bool) {
     if (servlet_bool == true) {
         fetch_string = "/data"
     } else {
-        // fetch_string = "/search_data"
+        fetch_string = "/search_data"
     }
     fetch(fetch_string)
       .then(response => response.text())

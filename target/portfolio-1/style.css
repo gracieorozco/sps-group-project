@@ -7,3 +7,9 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+h2 {
+  font-weight: bold;
+  /* color: #bd0000; */
+  font-size: 26px;
+}

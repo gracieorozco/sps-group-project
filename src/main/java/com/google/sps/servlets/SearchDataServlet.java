@@ -37,6 +37,12 @@ public class SearchDataServlet extends HttpServlet {
 
 @Override
 public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    search_string_pass = request.getParameter("search_text_input");
+    if ((search_string_pass == null) || (search_string_pass == "")) {
+        response.getWriter().println("Error");
+        return;
+    }
+
     // Variable set up for query
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Post").addSort("timestamp", SortDirection.DESCENDING);
@@ -53,6 +59,19 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
 
         // If post contains search term, add it to ArrayList
         Post post = new Post(id, post_title, user_name, post_content, timestamp);
+
+        if (post_content == null || post_title == null || user_name == null) {
+            continue;
+        }
+        
+        // If post contains search term, add it to ArrayList
+        System.out.println("String to find: " + search_string_pass);
+        if (post_content.toLowerCase().contains(search_string_pass.toLowerCase())) {
+            System.out.println("In word");
+            posts.add(post);
+        } else {
+            System.out.println("Not in word");
+        }
     }
 
     // Convert the ArrayList to a string in JSON format and print the response
@@ -63,40 +82,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    search_string_pass = request.getParameter("search_text_input");
-    if ((search_string_pass == null) || (search_string_pass == "")) {
-        response.getWriter().println("Error");
-        return;
-    }
-
-    response.getWriter().println("<h1>Search Results for \"" + search_string_pass + "\"</h1>");
-
-    // Variable set up for query
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("Post").addSort("timestamp", SortDirection.DESCENDING);
-    PreparedQuery results = datastore.prepare(query);
-    search_string_pass = request.getParameter("search_text_input");
-
-    // Loop through the query and set properties of a post object to add into an ArrayList
-    for (Entity entity : results.asIterable()) {
-        long id = entity.getKey().getId();
-        String post_content = (String) entity.getProperty("post_content");
-        String post_title = (String) entity.getProperty("post_title");
-        String user_name = (String) entity.getProperty("user_name");
-        long timestamp = (long) entity.getProperty("timestamp");
-        if (post_content == null || post_title == null || user_name == null) {
-            continue;
-        }
-        
-        // If post contains search term, add it to ArrayList
-        System.out.println("String to find: " + search_string_pass);
-        if (post_content.toLowerCase().contains(search_string_pass.toLowerCase())) {
-            System.out.println("In word");
-            response.getWriter().println("<p>" + post_title + "</p>");
-        } else {
-            System.out.println("Not in word");
-        }
-    }
+    response.sendRedirect("search_results.html");
   }
 
   public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {

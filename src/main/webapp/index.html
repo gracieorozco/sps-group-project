@@ -9,11 +9,13 @@
   </head>
   <body onload="obtain_fetch_data(true)">
     <div style="margin-left:50px;">
-        <h1>Posts</h1>
+        <h1>Posts</h1> <br>
         <a href="new_post.html" class="btn btn-primary" style="color:white;">Create a new post</a> <br> <br>
-        <form action="/search_data" method="POST">
+        <form action="/search_data" method="get">
+            <label>Search Posts:</label><br>
             <input type="text" name="search_text_input"/>
-        </form>
+            <input type="submit" value="Search">
+        </form> <br>
     </div>
     <div id="posts" class="row" style="margin-left:40px;"></div>
   </body>
