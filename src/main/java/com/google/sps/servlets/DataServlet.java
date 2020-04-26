@@ -20,6 +20,8 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Post;
 import java.util.ArrayList;
@@ -55,9 +57,10 @@ public class DataServlet extends HttpServlet {
         String post_title = (String) entity.getProperty("post_title");
         String user_name = (String) entity.getProperty("user_name");
         String post_content = (String) entity.getProperty("post_content");
+        String email = (String) entity.getProperty("email");
         long unique_id = (long) entity.getProperty("unique_id");
         long timestamp = (long) entity.getProperty("timestamp");
-        Post post = new Post(unique_id, id, post_title, user_name, post_content, timestamp);
+        Post post = new Post(unique_id, id, post_title, user_name, post_content, timestamp, email);
         posts.add(post);
     }
     // Convert the ArrayList to a string in JSON format and print the response
@@ -96,23 +99,31 @@ public class DataServlet extends HttpServlet {
     for (Entity entity : results.asIterable()) {
         ++cnt;
     }
+    UserService userService = UserServiceFactory.getUserService();
+    if (userService.isUserLoggedIn()) {
+        // Get the input from the form
+        String username = request.getParameter("user-input");
+        String title = request.getParameter("title-input");
+        String content = request.getParameter("content-input");
+        long timestamp = System.currentTimeMillis();
+        String userEmail = userService.getCurrentUser().getEmail();
+        // Create an entity and set the properties
+        Entity post_entity = new Entity("Post");
+        post_entity.setProperty("unique_id", cnt + 1);
+        post_entity.setProperty("user_name", username);
+        post_entity.setProperty("post_title", title);
+        post_entity.setProperty("post_content", content);
+        post_entity.setProperty("timestamp", timestamp);
 
+        datastore.put(post_entity);
+        response.sendRedirect("index.html");
+    } else {
+        String urlToRedirectToAfterUserLogsIn = "/login";
+        String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
+        response.getWriter().println("<p>In order to make a post, you must log in.</p>");
+        response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+    }
 
-    // Get the input from the form
-    String username = request.getParameter("user-input");
-    String title = request.getParameter("title-input");
-    String content = request.getParameter("content-input");
-    long timestamp = System.currentTimeMillis();
-    // Create an entity and set the properties
-    Entity post_entity = new Entity("Post");
-    post_entity.setProperty("unique_id", cnt + 1);
-    post_entity.setProperty("user_name", username);
-    post_entity.setProperty("post_title", title);
-    post_entity.setProperty("post_content", content);
-    post_entity.setProperty("timestamp", timestamp);
-
-    datastore.put(post_entity);
-    response.sendRedirect("index.html");
   }
 
   public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {
