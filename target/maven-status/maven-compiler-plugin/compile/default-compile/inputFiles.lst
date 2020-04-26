@@ -1,5 +1,5 @@
-/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/servlets/DataServlet.java
-/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/servlets/SearchDataServlet.java
-/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/servlets/CServlet.java
-/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/data/Comment.java
-/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/data/Post.java
+/home/gorozco/sps-group-project/src/main/java/com/google/sps/servlets/CServlet.java
+/home/gorozco/sps-group-project/src/main/java/com/google/sps/data/Comment.java
+/home/gorozco/sps-group-project/src/main/java/com/google/sps/servlets/SearchDataServlet.java
+/home/gorozco/sps-group-project/src/main/java/com/google/sps/data/Post.java
+/home/gorozco/sps-group-project/src/main/java/com/google/sps/servlets/DataServlet.java
