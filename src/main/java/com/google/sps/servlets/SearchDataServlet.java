@@ -50,9 +50,9 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
         String user_name = (String) entity.getProperty("user_name");
         String post_content = (String) entity.getProperty("post_content");
         long timestamp = (long) entity.getProperty("timestamp");
-
+        long unique_id = (long) entity.getProperty("unique_id");
         // If post contains search term, add it to ArrayList
-        Post post = new Post(id, post_title, user_name, post_content, timestamp);
+        Post post = new Post(unique_id, id, post_title, user_name, post_content, timestamp);
     }
 
     // Convert the ArrayList to a string in JSON format and print the response
