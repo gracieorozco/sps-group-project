@@ -8,12 +8,21 @@ public final class Post {
     private String post_content;
     private long time_posted;
 
-    public Post(long id, String title, String user, String content, long time) {
+    private long unique_id;
+
+    public Post(long unique_id, long id, String title, String user, String content, long time) {
+
+        this.unique_id = unique_id;
+
         this.id = id;
         this.post_title = title;
         this.user_name = user;
         this.post_content = content;
         this.time_posted = time;
+    }
+
+    public long GetUniqueId(){
+        return this.unique_id; 
     }
 
     public long GetID() {

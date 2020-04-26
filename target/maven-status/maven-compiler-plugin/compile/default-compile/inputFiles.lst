@@ -1,3 +1,5 @@
-/home/achehadi/sps-group-project/src/main/java/com/google/sps/servlets/SearchDataServlet.java
-/home/achehadi/sps-group-project/src/main/java/com/google/sps/servlets/DataServlet.java
-/home/achehadi/sps-group-project/src/main/java/com/google/sps/data/Post.java
+/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/servlets/DataServlet.java
+/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/servlets/SearchDataServlet.java
+/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/servlets/CServlet.java
+/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/data/Comment.java
+/home/seb/sps-group-project4/sps-group-project/src/main/java/com/google/sps/data/Post.java
