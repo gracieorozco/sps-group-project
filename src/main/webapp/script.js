@@ -42,6 +42,7 @@ function obtain_fetch_data(servlet_bool) {
                 // Creation and styling of the user as a p element
                 var p = create_and_set_html_content('p', post_obj.user_name);
                 p.setAttribute('class', 'card-subtitle mb-2 text-muted');
+                p.setAttribute('style', 'font-style:italic;');
                 card_body_div.appendChild(p);
 
                 // Creation and styling of the post content as a p element
@@ -52,12 +53,12 @@ function obtain_fetch_data(servlet_bool) {
                 // Creation and styling of a button as an a element
                 var reply_button = create_and_set_html_content('a', 'Reply');
                 reply_button.setAttribute('class', 'btn btn-primary')
-                reply_button.setAttribute('style', 'color:white;');
+                reply_button.setAttribute('style', 'color:white; font-weight:620;');
                 card_body_div.appendChild(reply_button);
 
                 // Append all of the elements within card_body_div into card_div
                 card_div.appendChild(card_body_div);
-                card_div.setAttribute('style', 'width:18rem;margin: 10px 10px 10px 10px;');
+                card_div.setAttribute('style', 'width:18rem; margin: 10px 10px 10px 10px; box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2), 0 1.5px 5px 0 rgba(0, 0, 0, 0.19);');
                 
                 // Create a br element to space out all of the posts
                 // On the HTML page the function is called in, find a pre-defined
