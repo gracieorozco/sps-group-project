@@ -16,8 +16,10 @@ function obtain_fetch_data(servlet_bool) {
     var fetch_string = ""
     if (servlet_bool == true) {
         fetch_string = "/data"
+        console.log('JS REACHED');
     } else {
         fetch_string = "/search_data"
+        console.log('JS REACHED');
     }
     fetch(fetch_string)
       .then(response => response.text())

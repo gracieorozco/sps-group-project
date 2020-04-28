@@ -37,11 +37,11 @@ public class SearchDataServlet extends HttpServlet {
 
 @Override
 public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    search_string_pass = request.getParameter("search_text_input");
-    if ((search_string_pass == null) || (search_string_pass == "")) {
-        response.getWriter().println("Error");
-        return;
-    }
+    // search_string_pass = request.getParameter("search_text_input");
+    // if ((search_string_pass == null) || (search_string_pass == "")) {
+    //     response.getWriter().println("Error");
+    //     return;
+    // }
 
     // Variable set up for query
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -78,10 +78,18 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
     String json = convertToJsonUsingGson(posts);
     response.setContentType("application/json;");
     response.getWriter().println(json);
+
+    // response.sendRedirect("search_results.html");
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    search_string_pass = request.getParameter("search_text_input");
+    if ((search_string_pass == null) || (search_string_pass == "")) {
+        response.getWriter().println("Error");
+        return;
+    }
+
     response.sendRedirect("search_results.html");
   }
 
