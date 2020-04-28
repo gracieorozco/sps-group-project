@@ -49,11 +49,25 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
         String post_title = (String) entity.getProperty("post_title");
         String user_name = (String) entity.getProperty("user_name");
         String post_content = (String) entity.getProperty("post_content");
-        long timestamp = (long) entity.getProperty("timestamp");
-        long unique_id = (long) entity.getProperty("unique_id");
         String email = (String) entity.getProperty("email");
+        long unique_id = (long) entity.getProperty("unique_id");
+        long timestamp = (long) entity.getProperty("timestamp");
+
         // If post contains search term, add it to ArrayList
         Post post = new Post(unique_id, id, post_title, user_name, post_content, timestamp, email);
+
+        if (post_content == null || post_title == null || user_name == null) {
+            continue;
+        }
+        
+        // If post contains search term, add it to ArrayList
+        System.out.println("String to find: " + search_string_pass);
+        if (post_content.toLowerCase().contains(search_string_pass.toLowerCase())) {
+            System.out.println("In word");
+            posts.add(post);
+        } else {
+            System.out.println("Not in word");
+        }
     }
 
     // Convert the ArrayList to a string in JSON format and print the response
@@ -70,34 +84,7 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) thro
         return;
     }
 
-    response.getWriter().println("<h1>Search Results for \"" + search_string_pass + "\"</h1>");
-
-    // Variable set up for query
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("Post").addSort("timestamp", SortDirection.DESCENDING);
-    PreparedQuery results = datastore.prepare(query);
-    search_string_pass = request.getParameter("search_text_input");
-
-    // Loop through the query and set properties of a post object to add into an ArrayList
-    for (Entity entity : results.asIterable()) {
-        long id = entity.getKey().getId();
-        String post_content = (String) entity.getProperty("post_content");
-        String post_title = (String) entity.getProperty("post_title");
-        String user_name = (String) entity.getProperty("user_name");
-        long timestamp = (long) entity.getProperty("timestamp");
-        if (post_content == null || post_title == null || user_name == null) {
-            continue;
-        }
-        
-        // If post contains search term, add it to ArrayList
-        System.out.println("String to find: " + search_string_pass);
-        if (post_content.toLowerCase().contains(search_string_pass.toLowerCase())) {
-            System.out.println("In word");
-            response.getWriter().println("<p>" + post_title + "</p>");
-        } else {
-            System.out.println("Not in word");
-        }
-    }
+    response.sendRedirect("search_results.html");
   }
 
   public String convertToJsonUsingGson(ArrayList<Post> post_arraylist) {

@@ -7,3 +7,18 @@
 #greeting-container {
   margin-top: 20px;
 }
+
+h1 {
+  font-weight: bold;
+  font-size: 52px;
+}
+
+h2 {
+  font-weight: bold;
+  font-size: 26px;
+}
+
+.btn {
+    color: white;
+    font-weight: 620;
+}
